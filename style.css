@@ -1,0 +1,321 @@
+/* ===== charity: water brand colors ===== */
+:root {
+  --cw-yellow: #FFC907;
+  --cw-blue: #2E9DF7;
+  --cw-dark-blue: #1d6fb0;
+  --cw-green: #4FCB53;
+  --cw-dark-green: #159A48;
+  --cw-red: #F5402C;
+  --cw-orange: #FF902A;
+  --ink: #1f1f1f;
+  --gray: #5c5c5c;
+  --sand: #f7f1e3;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Proxima Nova", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* ===== Header ===== */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: var(--cw-yellow);
+}
+.logo { height: 48px; }
+h1 { margin: 0; font-size: 2rem; letter-spacing: 1px; }
+.tagline { margin: 4px 0 0; font-size: 1rem; }
+
+/* ===== Layout ===== */
+.game {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ===== Stats bar ===== */
+.hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.stat {
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+}
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--cw-yellow);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.stat-value { font-size: 1.5rem; font-weight: 700; }
+.jerrycan { width: 14px; height: 14px; fill: var(--cw-yellow); }
+
+/* Quick "pop" when a number changes */
+.pop { animation: pop 0.3s ease; }
+@keyframes pop {
+  50% { transform: scale(1.25); color: var(--cw-yellow); }
+}
+/* Red flash when you lose points or can't afford something */
+.flash-bad { animation: flash-bad 0.5s ease; }
+@keyframes flash-bad {
+  50% { background: var(--cw-red); }
+}
+
+/* ===== Buttons ===== */
+.controls { display: flex; gap: 8px; margin: 12px 0 8px; }
+.btn {
+  min-height: 44px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 2px solid var(--ink);
+  font: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.btn-primary { background: var(--cw-yellow); color: var(--ink); }
+.btn-primary:hover { background: #ffd84d; }
+.btn-secondary { background: var(--white); color: var(--ink); }
+.btn-secondary:hover { background: #eeeeee; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ===== Feedback message ===== */
+.message {
+  min-height: 48px;
+  margin: 0 0 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  font-weight: 600;
+}
+.message.good { background: #dff5e1; color: #0f6b33; }
+.message.bad { background: #fde3e0; color: #a3200f; }
+
+/* ===== Map ===== */
+.map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;   /* wide on desktop */
+  background: var(--sand);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.map.locked .spot { cursor: not-allowed; }
+
+.pipes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.pipe { stroke: var(--cw-blue); stroke-width: 8px; stroke-linecap: round; }
+.pipe-bad { stroke: var(--cw-red); stroke-dasharray: 6 6; }
+
+/* Villages and wells share the "spot" style.
+   left/top are set in script.js as percentages. */
+.spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  min-width: 64px;
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Village */
+.house {
+  position: relative;
+  width: 52px;
+  height: 46px;
+}
+.house svg { width: 100%; height: 100%; }
+.house svg path { fill: var(--white); stroke: var(--ink); stroke-width: 3; }
+/* Labels get a sand background so pipes don't run through the text */
+.village-name, .village-status, .well-label {
+  background: var(--sand);
+  padding: 0 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.village-name { font-weight: 700; font-size: 0.85rem; }
+.village-status { font-size: 0.75rem; color: var(--gray); }
+
+.village.selected .house svg path { fill: var(--cw-yellow); }
+.village.selected .village-name { text-decoration: underline; }
+.village.served .house svg path { fill: #cfeaff; }
+.village.sick .house svg path { fill: #fbb9b0; }
+
+.check {
+  position: absolute;
+  top: -10px;
+  right: -14px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--cw-dark-green);
+  color: var(--white);
+  font-weight: 700;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.village.served .check { display: flex; }
+
+/* Well */
+.well-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 4px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: inset 0 0 0 4px #cfeaff;
+}
+.well-label { font-size: 0.75rem; font-weight: 600; }
+.well-cost {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--ink);
+  color: var(--cw-yellow);
+  padding: 1px 6px;
+  border-radius: 4px;
+  visibility: hidden;   /* shown only while a village is selected */
+}
+.map.choosing .well-cost { visibility: visible; }
+.well.full .well-circle { opacity: 0.4; }
+
+/* Shake when something isn't allowed */
+.shake { animation: shake 0.4s ease; }
+@keyframes shake {
+  25% { transform: translate(-56%, -50%); }
+  75% { transform: translate(-44%, -50%); }
+}
+
+/* Floating "+150" text */
+.float-text {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-weight: 800;
+  font-size: 1.3rem;
+  pointer-events: none;
+  animation: float-up 1.2s ease forwards;
+}
+.float-text.good { color: var(--cw-dark-green); }
+.float-text.bad { color: var(--cw-red); }
+@keyframes float-up {
+  to { transform: translate(-50%, -250%); opacity: 0; }
+}
+
+/* ===== Legend ===== */
+.legend {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 0.85rem;
+}
+.legend li { display: flex; align-items: center; gap: 6px; }
+.legend-well {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid var(--ink); font-size: 0.6rem; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.legend-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--cw-dark-green); color: var(--white);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.legend-bad { width: 28px; border-top: 4px dashed var(--cw-red); }
+
+/* ===== End-of-game popup ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+.overlay.hidden { display: none; }
+.overlay-card {
+  background: var(--white);
+  border-top: 10px solid var(--cw-yellow);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 420px;
+  text-align: center;
+}
+.overlay-card h2 { margin-top: 0; }
+.impact { font-size: 0.9rem; color: var(--gray); }
+.impact a, .site-footer a { color: var(--cw-dark-blue); font-weight: 700; }
+
+/* ===== Confetti ===== */
+.confetti {
+  position: fixed;
+  top: -20px;
+  width: 10px;
+  height: 16px;
+  z-index: 20;
+  pointer-events: none;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  to { transform: translateY(110vh) rotate(720deg); }
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 0.9rem;
+}
+
+/* ===== Mobile layout ===== */
+@media (max-width: 600px) {
+  .site-header { padding: 12px 16px; }
+  h1 { font-size: 1.5rem; }
+  .tagline { font-size: 0.85rem; }
+  .game { padding: 12px; }
+  .hud { grid-template-columns: repeat(2, 1fr); }
+  .stat-value { font-size: 1.2rem; }
+  .controls .btn { flex: 1; }
+  .map { aspect-ratio: 3 / 4; }   /* tall on phones */
+  .house, .well-circle { width: 44px; }
+  .house { height: 38px; }
+  .well-circle { height: 44px; font-size: 1rem; }
+  .spot { min-width: 56px; }
+}

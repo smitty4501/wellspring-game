@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wellspring | A charity: water game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header: logo + title -->
+  <header class="site-header">
+    <!-- Put the charity: water logo from the brand kit at img/cw_logo.png.
+         If the file is missing, the image hides itself. -->
+    <img src="img/cw_logo.png" alt="charity: water logo" class="logo" onerror="this.remove()">
+    <div>
+      <h1>Wellspring</h1>
+      <p class="tagline">Pipe clean water to every village before the dry season ends.</p>
+    </div>
+  </header>
+
+  <main class="game">
+
+    <!-- Stats bar: score, time, budget, villages served -->
+    <section class="hud" aria-label="Game stats">
+      <div class="stat">
+        <span class="stat-label">Score</span>
+        <span class="stat-value" id="score">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Time</span>
+        <span class="stat-value" id="time">60</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Budget</span>
+        <span class="stat-value" id="budget">$1600</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">
+          <!-- Jerry can icon -->
+          <svg class="jerrycan" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="7" width="16" height="15" rx="2"></rect>
+            <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+            <rect x="16" y="3" width="3" height="4" rx="1"></rect>
+          </svg>
+          Served
+        </span>
+        <span class="stat-value" id="served">0/5</span>
+      </div>
+    </section>
+
+    <!-- Game controls -->
+    <div class="controls">
+      <button id="start-btn" class="btn btn-primary">Start</button>
+      <button id="reset-btn" class="btn btn-secondary">Reset</button>
+    </div>
+
+    <!-- Feedback message (screen readers announce changes) -->
+    <p id="message" class="message" aria-live="polite">
+      Press Start. Then tap a village, and tap a well to lay a pipe.
+    </p>
+
+    <!-- The map: pipes are drawn in the SVG, villages and wells are added by script.js -->
+    <div id="map" class="map">
+      <svg id="pipes" class="pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+    </div>
+
+    <!-- Legend -->
+    <ul class="legend">
+      <li><span class="legend-well">##</span> Well: the number is water quality (60+ is safe)</li>
+      <li><span class="legend-check">&#10003;</span> Village has clean water</li>
+      <li><span class="legend-bad"></span> Unsafe well: costs you points</li>
+    </ul>
+  </main>
+
+  <!-- End-of-game popup -->
+  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+    <div class="overlay-card">
+      <h2 id="overlay-title">Title</h2>
+      <p id="overlay-text">Text</p>
+      <p class="impact">
+        Right now, millions of people live without clean water.
+        <a href="https://www.charitywater.org" target="_blank" rel="noopener">See how charity: water is changing that</a>.
+      </p>
+      <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    Inspired by <a href="https://www.charitywater.org" target="_blank" rel="noopener">charity: water</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
