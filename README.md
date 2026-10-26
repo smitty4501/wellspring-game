@@ -18,20 +18,6 @@ A small browser-based resource-allocation prototype inspired by charity: water.
 
 This prototype is intentionally lightweight and function-first. The current design emphasizes challenge, budget pressure, and route selection rather than heavy visual polish.
 
-## GitHub publishing
-
-1. Create a repository on GitHub.
-2. Initialize Git locally if needed:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial Wellspring prototype"
-   git branch -M main
-   git remote add origin https://github.com/your-username/your-repo-name.git
-   git push -u origin main
-   ```
-3. If you want GitHub Pages, enable the Pages tab in the repository settings and select the main branch root folder.
-
 ## Future ideas
 
 - add difficulty settings
